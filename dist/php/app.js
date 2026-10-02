@@ -145,7 +145,8 @@ function telaLogin(app) {
     <div class="f"><label for="l">Usuário</label><input id="l" autocomplete="username" required autofocus></div>
     <div class="f"><label for="s">Senha</label><input id="s" type="password" autocomplete="current-password" required></div>
     <button class="btn pri" style="width:100%;justify-content:center">Entrar</button>
-    <p class="hint" style="text-align:center;margin-top:14px">Não tem acesso? Solicite ao administrador do sistema.</p></form></div>`.s;
+    <p class="hint" style="text-align:center;margin-top:14px">Não tem acesso? Solicite ao administrador do sistema.</p>
+    <p class="hint" style="text-align:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">Desenvolvido por <a href="https://sistemas360.online" target="_blank" rel="noopener" style="font-weight:700;text-decoration:none">Sistemas360.online</a></p></form></div>`.s;
   $('#f').onsubmit = async (e) => {
     e.preventDefault();
     await tentar(async () => {
