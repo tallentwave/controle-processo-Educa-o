@@ -137,3 +137,9 @@ textarea{min-height:100px;resize:vertical}
   .side,.top .btn,.filters,.menu-btn,#toasts{display:none!important}
   .shell{display:block}body{background:#fff}.card{box-shadow:none}
 }
+@media(max-width:560px){
+  .g4{grid-template-columns:1fr 1fr}
+  .stat .n{font-size:1.6rem}.stat{padding:12px}
+  .g2{grid-template-columns:1fr}
+  .top .btn.pri{order:3}
+}
