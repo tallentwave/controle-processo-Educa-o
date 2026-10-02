@@ -223,7 +223,7 @@ async function pgLista(main) {
     <div class="card">
       <div class="chips">${chips.map(([v, l]) => h`<button class="chip ${(q.prazo || '') === v ? 'on' : ''}" data-prazo="${v}">${l}</button>`)}</div>
       <div class="filters">
-        <input type="search" id="busca" placeholder="Buscar por número, assunto, interessado ou origem…" value="${q.q || ''}">
+        <input type="search" id="busca" placeholder="Buscar por número (1Doc), assunto, interessado ou origem…" value="${q.q || ''}">
         <select id="fstatus"><option value="">Todas as situações</option><option value="abertos" ${q.status === 'abertos' ? raw('selected') : ''}>Somente em aberto</option>${opt(STATUS, q.status)}</select>
         <select id="ftipo"><option value="">Todos os tipos</option>${opt(state.config.tipos, q.tipo)}</select>
         <select id="fresp"><option value="">Todos os responsáveis</option><option value="meus" ${q.responsavel === 'meus' ? raw('selected') : ''}>Somente os meus</option>${state.usuarios.map((u) => h`<option value="${u.id}" ${String(u.id) === q.responsavel ? raw('selected') : ''}>${u.nome}</option>`)}</select>
@@ -256,6 +256,7 @@ async function pgForm(main, _) {
   const resp = state.usuarios;
   const adm = state.user.perfil === 'admin';
   main.innerHTML = topo(id ? `Editar processo ${p.numero}` : 'Novo processo') + h`<form class="card" id="f"><div class="err-msg hide" id="err"></div><div class="form">
+    <div><label>Número do processo (1Doc) <span class="req">*</span></label><input name="numero" value="${p.numero || ''}" maxlength="60" required placeholder="Número gerado no 1Doc"></div>
     <div class="full"><label>Assunto <span class="req">*</span></label><input name="assunto" value="${p.assunto || ''}" maxlength="300" required placeholder="Ex.: Solicitação de transporte escolar – Zona Rural"></div>
     <div><label>Tipo</label><select name="tipo"><option value="">Selecione…</option>${state.config.tipos.map((t) => h`<option ${t === p.tipo ? raw('selected') : ''}>${t}</option>`)}</select></div>
     <div><label>Prioridade</label><select name="prioridade">${PRIOS.map((t) => h`<option ${t === p.prioridade ? raw('selected') : ''}>${t}</option>`)}</select></div>
@@ -265,13 +266,13 @@ async function pgForm(main, _) {
     <div><label>Prazo final</label><input type="date" name="prazo" value="${p.prazo || ''}"><div class="hint">Você será alertado ${state.config.dias_alerta} dias antes do vencimento.</div></div>
     <div><label>Responsável</label><select name="responsavel_id"><option value="">Sem responsável</option>${resp.map((u) => h`<option value="${u.id}" ${u.id === p.responsavel_id ? raw('selected') : ''}>${u.nome}</option>`)}</select></div>
     <div class="full"><label>Descrição / Observações</label><textarea name="descricao" maxlength="5000">${p.descricao || ''}</textarea></div>
-  </div><div style="display:flex;gap:8px;margin-top:18px"><button class="btn pri">${id ? 'Salvar alterações' : 'Abrir processo'}</button><a class="btn" href="#/processos${id ? '/' + id : ''}">Cancelar</a></div></form>`.s;
+  </div><div style="display:flex;gap:8px;margin-top:18px"><button class="btn pri">${id ? 'Salvar alterações' : 'Cadastrar processo'}</button><a class="btn" href="#/processos${id ? '/' + id : ''}">Cancelar</a></div></form>`.s;
   $('#f').onsubmit = async (e) => {
     e.preventDefault();
     const body = Object.fromEntries(new FormData(e.target).entries());
     await tentar(async () => {
       const r = id ? await api('PUT', '/api/processos/' + id, body) : await api('POST', '/api/processos', body);
-      toast(id ? 'Processo atualizado.' : `Processo ${r.numero} aberto.`); location.hash = '#/processos/' + (id || r.id);
+      toast(id ? 'Processo atualizado.' : `Processo ${r.numero} cadastrado.`); location.hash = '#/processos/' + (id || r.id);
       const al = await api('GET', '/api/alertas'); state.alertas = al;
     }, $('#err'));
   };

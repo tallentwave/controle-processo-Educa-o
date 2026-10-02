@@ -48,13 +48,15 @@ test('fluxo completo: admin, usuários, processos e alertas', async () => {
   assert.strictEqual((await maria('GET', '/api/auditoria')).status, 403);
   assert.strictEqual((await maria('POST', '/api/usuarios', {})).status, 403);
 
-  const p1 = await maria('POST', '/api/processos', { assunto: 'Transporte escolar', tipo: 'Transporte escolar', data_abertura: dia(-10), prazo: dia(-3) });
-  const p2 = await maria('POST', '/api/processos', { assunto: 'Merenda', prazo: dia(0) });
-  const p3 = await maria('POST', '/api/processos', { assunto: 'Reforma', prazo: dia(3) });
-  const p4 = await maria('POST', '/api/processos', { assunto: 'Longe', prazo: dia(30) });
-  assert.match(p1.body.numero, /^\d{4}\/0001$/);
-  assert.strictEqual((await maria('POST', '/api/processos', { assunto: '' })).status, 400);
-  assert.strictEqual((await maria('POST', '/api/processos', { assunto: 'x', prazo: '2000-01-01' })).status, 400);
+  const p1 = await maria('POST', '/api/processos', { numero: '1DOC-0001', assunto: 'Transporte escolar', tipo: 'Transporte escolar', data_abertura: dia(-10), prazo: dia(-3) });
+  const p2 = await maria('POST', '/api/processos', { numero: '1DOC-0002', assunto: 'Merenda', prazo: dia(0) });
+  const p3 = await maria('POST', '/api/processos', { numero: '1DOC-0003', assunto: 'Reforma', prazo: dia(3) });
+  const p4 = await maria('POST', '/api/processos', { numero: '1DOC-0004', assunto: 'Longe', prazo: dia(30) });
+  assert.strictEqual(p1.body.numero, '1DOC-0001');
+  assert.strictEqual((await maria('POST', '/api/processos', { numero: '1doc-0001', assunto: 'Duplicado' })).status, 400);
+  assert.strictEqual((await maria('POST', '/api/processos', { assunto: 'Sem número' })).status, 400);
+  assert.strictEqual((await maria('POST', '/api/processos', { numero: 'X1', assunto: '' })).status, 400);
+  assert.strictEqual((await maria('POST', '/api/processos', { numero: 'X2', assunto: 'x', prazo: '2000-01-01' })).status, 400);
 
   const lista = (await maria('GET', '/api/processos')).body;
   const sit = Object.fromEntries(lista.map((p) => [p.assunto, p.situacao]));

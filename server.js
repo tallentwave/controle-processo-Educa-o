@@ -103,15 +103,13 @@ function podeEditar(user, p) {
 function addMov(pid, uid, tipo, texto) {
   db.prepare('INSERT INTO movimentacoes(processo_id,usuario_id,tipo,texto) VALUES(?,?,?,?)').run(pid, uid, tipo, texto);
 }
-function proximoNumero() {
-  const ano = hoje().slice(0, 4);
-  const r = db.prepare("SELECT numero FROM processos WHERE numero LIKE ? ORDER BY id DESC LIMIT 1").get(`${ano}/%`);
-  const n = r ? Number(r.numero.split('/')[1]) + 1 : 1;
-  return `${ano}/${String(n).padStart(4, '0')}`;
+function numeroUnico(numero, ignorarId) {
+  if (db.prepare('SELECT 1 FROM processos WHERE numero=? COLLATE NOCASE AND id<>?').get(numero, ignorarId || 0)) throw bad(`Já existe um processo cadastrado com o número ${numero}.`);
 }
 
 function valida(b, cfg, parcial = false) {
   const d = {};
+  if (!parcial || 'numero' in b) { d.numero = str(b.numero, 60); if (!d.numero) throw bad('Informe o número do processo (1Doc).'); }
   if (!parcial || 'assunto' in b) { d.assunto = str(b.assunto, 300); if (!d.assunto) throw bad('Informe o assunto do processo.'); }
   for (const k of ['tipo', 'interessado', 'origem']) if (!parcial || k in b) d[k] = str(b[k], 200) || null;
   if (!parcial || 'descricao' in b) d.descricao = str(b.descricao, 5000) || null;
@@ -217,16 +215,11 @@ route('POST', '/api/processos', AUTH, ({ user, body }) => {
   const cfg = getConfig(), d = valida(body, cfg);
   if (d.prazo && d.prazo < d.data_abertura) throw bad('O prazo não pode ser anterior à data de abertura.');
   if (!('responsavel_id' in d)) d.responsavel_id = user.id;
-  let id, numero;
-  db.exec('BEGIN IMMEDIATE');
-  try {
-    numero = proximoNumero();
-    const r = db.prepare(`INSERT INTO processos(numero,assunto,tipo,interessado,origem,descricao,prioridade,data_abertura,prazo,responsavel_id,criado_por)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?)`).run(numero, d.assunto, d.tipo, d.interessado, d.origem, d.descricao, d.prioridade, d.data_abertura, d.prazo, d.responsavel_id, user.id);
-    id = Number(r.lastInsertRowid);
-    addMov(id, user.id, 'abertura', 'Processo aberto.');
-    db.exec('COMMIT');
-  } catch (e) { db.exec('ROLLBACK'); throw e; }
+  numeroUnico(d.numero);
+  const r = db.prepare(`INSERT INTO processos(numero,assunto,tipo,interessado,origem,descricao,prioridade,data_abertura,prazo,responsavel_id,criado_por)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?)`).run(d.numero, d.assunto, d.tipo, d.interessado, d.origem, d.descricao, d.prioridade, d.data_abertura, d.prazo, d.responsavel_id, user.id);
+  const id = Number(r.lastInsertRowid), numero = d.numero;
+  addMov(id, user.id, 'abertura', 'Processo cadastrado.');
   audit(user, 'processo_criado', numero);
   return { id, numero };
 });
@@ -244,15 +237,17 @@ route('PUT', '/api/processos/:id', AUTH, ({ user, body, params }) => {
   const d = valida(body, getConfig(), true);
   const novo = { ...atual, ...d };
   if (novo.prazo && novo.prazo < novo.data_abertura) throw bad('O prazo não pode ser anterior à data de abertura.');
+  if (d.numero !== undefined && d.numero !== atual.numero) numeroUnico(d.numero, atual.id);
   const mudancas = [];
+  if (d.numero !== undefined && d.numero !== atual.numero) mudancas.push(`Número alterado de ${atual.numero} para ${d.numero}`);
   if (d.prazo !== undefined && d.prazo !== atual.prazo) mudancas.push(`Prazo alterado de ${atual.prazo || 'sem prazo'} para ${d.prazo || 'sem prazo'}`);
   if (d.prioridade && d.prioridade !== atual.prioridade) mudancas.push(`Prioridade: ${atual.prioridade} → ${d.prioridade}`);
   if (d.responsavel_id !== undefined && d.responsavel_id !== atual.responsavel_id) {
     const nome = (id) => (id ? db.prepare('SELECT nome FROM usuarios WHERE id=?').get(id)?.nome : 'ninguém');
     mudancas.push(`Responsável: ${nome(atual.responsavel_id)} → ${nome(d.responsavel_id)}`);
   }
-  db.prepare(`UPDATE processos SET assunto=?,tipo=?,interessado=?,origem=?,descricao=?,prioridade=?,data_abertura=?,prazo=?,responsavel_id=?,atualizado_em=datetime('now') WHERE id=?`)
-    .run(novo.assunto, novo.tipo, novo.interessado, novo.origem, novo.descricao, novo.prioridade, novo.data_abertura, novo.prazo, novo.responsavel_id, atual.id);
+  db.prepare(`UPDATE processos SET numero=?,assunto=?,tipo=?,interessado=?,origem=?,descricao=?,prioridade=?,data_abertura=?,prazo=?,responsavel_id=?,atualizado_em=datetime('now') WHERE id=?`)
+    .run(novo.numero, novo.assunto, novo.tipo, novo.interessado, novo.origem, novo.descricao, novo.prioridade, novo.data_abertura, novo.prazo, novo.responsavel_id, atual.id);
   if (mudancas.length) addMov(atual.id, user.id, 'alteracao', mudancas.join('; ') + '.');
   audit(user, 'processo_editado', atual.numero);
   return { ok: true };

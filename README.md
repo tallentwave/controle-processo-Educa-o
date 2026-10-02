@@ -5,7 +5,7 @@ Sistema web para registrar, acompanhar e controlar prazos de processos da Secret
 ## Recursos
 - **Perfis**: *Administrador* (cria/edita/desativa usuários, redefine senhas, configura o sistema, exclui processos, vê a auditoria) e *Usuário* (criado pelo administrador).
 - **Primeiro acesso seguro**: senhas provisórias, troca obrigatória no primeiro login, senhas com hash `scrypt`, bloqueio temporário após 5 tentativas erradas.
-- **Processos**: numeração automática (`AAAA/NNNN`), tipo, prioridade, interessado, origem, responsável, prazo, situação e histórico de andamentos (linha do tempo).
+- **Processos**: número do processo informado manualmente (número do sistema 1Doc, único), tipo, prioridade, interessado, origem, responsável, prazo, situação e histórico de andamentos (linha do tempo).
 - **Controle de prazos com alerta**: painel com vencidos / vencem hoje / próximos N dias, faixa de aviso, central de alertas (cada usuário vê os seus; o admin vê todos), cores nas listas e contador no menu. A antecedência (N) é configurável.
 - **Painel** com indicadores, carga por responsável e últimas movimentações.
 - Busca e filtros, exportação **CSV** (Excel), impressão, **auditoria** de ações, layout responsivo (celular).

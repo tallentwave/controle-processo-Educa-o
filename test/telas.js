@@ -25,8 +25,8 @@ const d = (n) => new Date(Date.now() + n * 864e5).toLocaleDateString('en-CA', { 
     ['Denúncia de falta de professor – turma 5º B', 'Denúncia / Ouvidoria', 'Ouvidoria Municipal', 'Ouvidoria', 'Urgente', -1, 1, 'ana'],
   ];
   const pid = [];
-  for (const [assunto, tipo, interessado, origem, prioridade, ab, pr, resp] of P) {
-    const r = await call('a', 'POST', '/api/processos', { assunto, tipo, interessado, origem, prioridade, data_abertura: d(ab), prazo: d(pr), responsavel_id: ids[resp], descricao: 'Processo encaminhado para análise e providências conforme documentação anexa ao protocolo.' });
+  let seq = 100230; for (const [assunto, tipo, interessado, origem, prioridade, ab, pr, resp] of P) {
+    const r = await call('a', 'POST', '/api/processos', { numero: `1Doc ${seq++}/2026`, assunto, tipo, interessado, origem, prioridade, data_abertura: d(ab), prazo: d(pr), responsavel_id: ids[resp], descricao: 'Processo encaminhado para análise e providências conforme documentação anexa ao protocolo.' });
     pid.push(r.id);
   }
   await call('a', 'POST', `/api/processos/${pid[0]}/movimentacoes`, { texto: 'Solicitada vistoria da rota ao setor de frotas.' });
