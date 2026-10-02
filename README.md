@@ -25,3 +25,7 @@ Os dados ficam em `data/processos.db` (altere com `DATA_DIR`). **Faça backup pe
 
 ## Produção
 Publique atrás de HTTPS (ex.: nginx/Caddy como proxy reverso). Em HTTPS, considere adicionar o atributo `Secure` ao cookie de sessão em `server.js`.
+
+## Instalação em VPS (Ubuntu/Debian)
+Como root no servidor: `DOMINIO=processos.seudominio.gov.br bash deploy/instalar.sh` (sem `DOMINIO` o acesso é por `http://IP:3000`).
+O script instala Node 22, cria o serviço `processos`, HTTPS automático (Caddy), backup diário em `/var/backups/processos` e o comando `processos-atualizar`.

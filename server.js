@@ -6,6 +6,10 @@ const crypto = require('node:crypto');
 const { db, hashSenha, confereSenha, getConfig, setConfig, audit } = require('./db');
 
 const PORT = Number(process.env.PORT || 3000);
+const HOST = process.env.HOST || '0.0.0.0';
+const COOKIE_SECURE = process.env.COOKIE_SECURE === '1' ? '; Secure' : '';
+const TRUST_PROXY = process.env.TRUST_PROXY === '1';
+const ipDe = (req) => (TRUST_PROXY && req.headers['x-forwarded-for'] ? String(req.headers['x-forwarded-for']).split(',')[0].trim() : req.socket.remoteAddress);
 const PUBLIC = path.join(__dirname, 'public');
 const SESSAO_MS = 8 * 60 * 60 * 1000;
 const ABERTOS = "('Aberto','Em andamento','Aguardando')";
@@ -39,7 +43,7 @@ function usuarioDaSessao(req) {
 function criaSessao(res, uid) {
   const tok = crypto.randomBytes(32).toString('hex');
   db.prepare('INSERT INTO sessoes(token_hash,usuario_id,expira_em) VALUES(?,?,?)').run(sha(tok), uid, Date.now() + SESSAO_MS);
-  res.setHeader('Set-Cookie', `sid=${tok}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${SESSAO_MS / 1000}`);
+  res.setHeader('Set-Cookie', `sid=${tok}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${SESSAO_MS / 1000}${COOKIE_SECURE}`);
 }
 const publico = (u) => ({ id: u.id, nome: u.nome, login: u.login, email: u.email, cargo: u.cargo, perfil: u.perfil, trocar_senha: !!u.trocar_senha });
 
@@ -136,7 +140,7 @@ const route = (method, pattern, opts, handler) => {
 const AUTH = { auth: true }, ADMIN = { auth: true, admin: true }, ANON = {};
 
 route('POST', '/api/login', ANON, ({ body, req, res }) => {
-  const login = str(body.login, 80), chave = `${req.socket.remoteAddress}|${login.toLowerCase()}`;
+  const login = str(body.login, 80), chave = `${ipDe(req)}|${login.toLowerCase()}`;
   checaTentativas(chave);
   const u = db.prepare('SELECT * FROM usuarios WHERE login=?').get(login);
   // confere sempre um hash para não revelar se o usuário existe pelo tempo de resposta
@@ -151,7 +155,7 @@ route('POST', '/api/login', ANON, ({ body, req, res }) => {
 route('POST', '/api/logout', ANON, ({ req, res }) => {
   const tok = parseCookies(req).sid;
   if (tok) db.prepare('DELETE FROM sessoes WHERE token_hash=?').run(sha(tok));
-  res.setHeader('Set-Cookie', 'sid=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');
+  res.setHeader('Set-Cookie', `sid=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${COOKIE_SECURE}`);
   return { ok: true };
 });
 route('GET', '/api/me', AUTH, ({ user }) => ({ ...publico(user), config: getConfig(), hoje: hoje() }));
@@ -403,7 +407,7 @@ async function handler(req, res) {
 function start(port = PORT) {
   const server = http.createServer(handler);
   setInterval(() => db.prepare('DELETE FROM sessoes WHERE expira_em<?').run(Date.now()), 3600e3).unref();
-  return new Promise((resolve) => server.listen(port, () => { console.log(`Sistema em http://localhost:${server.address().port}`); resolve(server); }));
+  return new Promise((resolve) => server.listen(port, HOST, () => { console.log(`Sistema em http://localhost:${server.address().port}`); resolve(server); }));
 }
 if (require.main === module) start();
 module.exports = { start };
