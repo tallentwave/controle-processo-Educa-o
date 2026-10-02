@@ -1,0 +1,12 @@
+{
+  "name": "controle-processos-educacao",
+  "version": "1.0.0",
+  "description": "Sistema de controle de processos para a Secretaria Municipal de Educação",
+  "private": true,
+  "type": "commonjs",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/api.test.js"
+  }
+}
