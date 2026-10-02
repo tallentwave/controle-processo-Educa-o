@@ -1,0 +1,19 @@
+CONTROLE DE PROCESSOS - SECRETARIA MUNICIPAL DE EDUCACAO
+Instalacao em hospedagem compartilhada (PHP 8.0+ e MySQL)
+
+1) No painel da hospedagem (hPanel): Bancos de dados > MySQL.
+   Crie um banco de dados e um usuario, e anote: nome do banco, usuario e senha.
+
+2) Gerenciador de Arquivos > pasta public_html (ou a pasta do dominio/subdominio).
+   Envie o arquivo controle-processos-php.zip e clique em "Extrair".
+   ATENCAO: o arquivo ".htaccess" comeca com ponto e fica oculto. Ative
+   "mostrar arquivos ocultos" para conferir que ele foi extraido.
+
+3) No navegador, abra:  https://SEU-DOMINIO/install.php
+   Preencha os dados do banco e do administrador e clique em "Instalar sistema".
+   O instalador se apaga sozinho ao terminar (confira se install.php sumiu).
+
+4) Pronto: acesse https://SEU-DOMINIO e entre com o login e a senha definidos.
+
+Backup: no hPanel, Bancos de dados > phpMyAdmin > Exportar (ou use os backups da hospedagem).
+Atualizar: envie os novos arquivos por cima, SEM apagar a pasta app (nela fica app/config.php).

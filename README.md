@@ -29,3 +29,11 @@ Publique atrás de HTTPS (ex.: nginx/Caddy como proxy reverso). Em HTTPS, consid
 ## Instalação em VPS (Ubuntu/Debian)
 Como root no servidor: `DOMINIO=processos.seudominio.gov.br bash deploy/instalar.sh` (sem `DOMINIO` o acesso é por `http://IP:3000`).
 O script instala Node 22, cria o serviço `processos`, HTTPS automático (Caddy), backup diário em `/var/backups/processos` e o comando `processos-atualizar`.
+
+## Versão PHP + MySQL com instalador pelo navegador (hospedagem compartilhada)
+Para hospedagens sem Node.js (ex.: planos compartilhados), use o pacote `dist/controle-processos-php.zip` (gerado por `php/build.sh`):
+1. Crie um banco MySQL e um usuário no painel da hospedagem.
+2. Envie e extraia o zip na `public_html` (confira que o `.htaccess` foi extraído).
+3. Abra `https://seu-dominio/install.php`, informe os dados do banco e do administrador. O instalador cria as tabelas e se apaga sozinho.
+
+Requisitos: PHP 8.0+ com `pdo_mysql` e `mbstring`. A interface e as regras são as mesmas da versão Node; `npm test` valida as duas (a PHP com SQLite; com `PHP_TEST_MYSQL=1`, contra um MySQL/MariaDB local).

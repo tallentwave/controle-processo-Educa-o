@@ -1,0 +1,19 @@
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^api/ api.php [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set Referrer-Policy "same-origin"
+Header always set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'"
+</IfModule>
+
+# nunca expor arquivos ocultos
+<FilesMatch "^\.(?!well-known)">
+Require all denied
+</FilesMatch>
