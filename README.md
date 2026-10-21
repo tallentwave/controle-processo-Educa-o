@@ -37,3 +37,8 @@ Para hospedagens sem Node.js (ex.: planos compartilhados), use o pacote `dist/co
 3. Abra `https://seu-dominio/install.php`, informe os dados do banco e do administrador. O instalador cria as tabelas e se apaga sozinho.
 
 Requisitos: PHP 8.0+ com `pdo_mysql` e `mbstring`. A interface e as regras são as mesmas da versão Node; `npm test` valida as duas (a PHP com SQLite; com `PHP_TEST_MYSQL=1`, contra um MySQL/MariaDB local).
+
+## Agenda da Secretaria (sistema separado, mesmo visual)
+Pasta `agenda/`: calendário (mês, semana, dia e lista) com compromissos recorrentes, reserva de espaços e veículos sem conflito, convites com aceite/recusa,
+lembretes e alertas, tarefas, contatos, feriados nacionais, exportação `.ics`, administrador e usuários criados por ele, auditoria e instalador pelo navegador.
+Pacote pronto: `dist/sistema-agenda-php.zip` (instruções no `LEIA-ME.txt` dentro do zip). Testes: `npm test` (`PHP_TEST_MYSQL=1` para MySQL/MariaDB).

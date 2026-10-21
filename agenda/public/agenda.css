@@ -1,0 +1,127 @@
+
+/* ===== Agenda: calendário e componentes próprios (usa as variáveis do tema base) ===== */
+.nav .badge.zero{display:none}
+.cal-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.cal-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cal-title{margin:0 0 0 6px;font-size:1.25rem}.cal-title::first-letter,.lista-dia h3::first-letter{text-transform:uppercase}
+.cal-bar .sp{flex:1}
+.views{display:flex;gap:6px;margin:0}
+.leg{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.8rem;color:var(--mut);margin:2px 0 12px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:5px;vertical-align:-1px}
+.filters label.chk{display:flex;align-items:center;gap:6px;margin:0;font-weight:600;align-self:center;white-space:nowrap}
+.filters label.chk input{width:auto}
+.cal-wrap{padding:0;overflow:hidden}
+
+/* chips de compromisso */
+.chip-ev{--c:#1d4ed8;display:block;width:100%;text-align:left;border:0;border-left:3px solid var(--c);background:#eef1f6;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--ink);border-radius:5px;padding:2px 6px;margin:2px 0;cursor:pointer;font-size:.78rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip-ev:hover{background:color-mix(in srgb,var(--c) 26%,#fff)}
+.chip-ev .hr{font-weight:700;margin-right:4px}
+.chip-ev.canc{opacity:.55;text-decoration:line-through}
+.chip-ev.dia{background:var(--c);color:#fff}
+.chip-ev.dia:hover{background:var(--c);filter:brightness(1.08)}
+.chip-ev.pend{border-left-style:dashed}
+
+/* visão mensal */
+.mes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.mes-cab{padding:8px 6px;text-align:center;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);background:#f8faff;border-bottom:1px solid var(--line)}
+.mes-dia{min-height:112px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 5px;min-width:0;position:relative}
+.mes-dia:nth-child(7n){border-right:0}
+.mes-dia.fora{background:#fafbfd}.mes-dia.fora .num{color:#9aa5bb}
+.mes-dia.fer{background:#fff8f1}
+.mes-topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.mes-dia .num{border:0;background:none;cursor:pointer;font-weight:700;width:26px;height:26px;border-radius:50%;font-size:.85rem}
+.mes-dia .num:hover{background:var(--pri-l)}
+.mes-dia.hoje .num{background:var(--pri);color:#fff}
+.mes-dia .mais{border:0;background:none;color:var(--mut);cursor:pointer;font-size:1rem;opacity:0;border-radius:6px;width:22px;height:22px;padding:0}
+.mes-dia:hover .mais{opacity:1}.mes-dia .mais:hover{background:var(--gry-l)}
+.fer-nome{font-size:.7rem;color:#b45309;font-weight:600;line-height:1.2;margin-bottom:2px}
+.ver-mais{border:0;background:none;color:var(--pri);font-weight:700;font-size:.76rem;cursor:pointer;padding:1px 4px}
+
+/* visão semanal / diária */
+.sem{--hh:50px;overflow-x:auto}
+.sem-in{min-width:640px}
+.sem-head,.sem-all,.sem-corpo{display:grid;grid-template-columns:54px repeat(var(--cols),minmax(0,1fr))}
+.sem-head{background:#f8faff;border-bottom:1px solid var(--line)}
+.sem-head .d{padding:8px 4px;text-align:center;border-left:1px solid var(--line);cursor:pointer}
+.sem-head .d small{display:block;color:var(--mut);font-weight:700;text-transform:uppercase;font-size:.7rem}
+.sem-head .d b{font-size:1.15rem;display:inline-block;min-width:34px;height:34px;line-height:34px;border-radius:50%}
+.sem-head .d.hoje b{background:var(--pri);color:#fff}
+.sem-head .d.fer small{color:#b45309}
+.sem-head .d .fn{display:block;font-size:.65rem;color:#b45309;font-weight:600;line-height:1.1}
+.sem-all{border-bottom:1px solid var(--line);min-height:30px}
+.sem-all .g,.sem-corpo .g{font-size:.68rem;color:var(--mut);padding:4px 6px;text-align:right}
+.sem-all .c{border-left:1px solid var(--line);padding:2px 3px;min-width:0}
+.sem-corpo{position:relative}
+.sem-corpo .horas{position:relative}
+.sem-corpo .horas span{position:absolute;right:6px;transform:translateY(-50%);font-size:.68rem;color:var(--mut)}
+.sem-corpo .col{position:relative;border-left:1px solid var(--line);background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--hh) - 1px),var(--line) calc(var(--hh) - 1px),var(--line) var(--hh));cursor:cell}
+.sem-corpo .col.hoje{background-color:#f5f8ff}
+.sem-corpo .col.fer{background-color:#fff8f1}
+.ev-bloco{--c:#1d4ed8;position:absolute;border:0;border-left:3px solid var(--c);background:#eef1f6;background:color-mix(in srgb,var(--c) 16%,#fff);color:var(--ink);border-radius:6px;padding:2px 5px;font-size:.74rem;line-height:1.25;text-align:left;overflow:hidden;cursor:pointer;box-shadow:0 1px 2px rgba(16,24,40,.12)}
+.ev-bloco:hover{z-index:5;background:color-mix(in srgb,var(--c) 28%,#fff)}
+.ev-bloco b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-bloco.canc{opacity:.55;text-decoration:line-through}
+.ev-bloco.pend{border-left-style:dashed}
+.agora{position:absolute;left:0;right:0;height:2px;background:var(--red);z-index:4;pointer-events:none}
+.agora::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+
+/* lista */
+.lista-dia{padding:10px 16px;border-bottom:1px solid var(--line)}
+.lista-dia:last-child{border-bottom:0}
+.lista-dia h3{margin:0 0 6px;font-size:.95rem}
+.lista-dia h3 small{color:var(--mut);font-weight:500;text-transform:none}
+.lista-dia.hoje h3{color:var(--pri)}
+.lin-ev{--c:#1d4ed8;display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:0;background:none;border-left:4px solid var(--c);padding:8px 10px;margin:3px 0;border-radius:6px;cursor:pointer}
+.lin-ev:hover{background:#f8faff}
+.lin-ev .t{min-width:96px;font-weight:700;font-size:.85rem}
+.lin-ev .x{flex:1;min-width:0}.lin-ev .x b{display:block}.lin-ev .x span{color:var(--mut);font-size:.82rem}
+.lin-ev.canc{opacity:.55}.lin-ev.canc b{text-decoration:line-through}
+
+/* detalhe do compromisso */
+.modal.largo{max-width:700px}
+.ev-topo{--c:#1d4ed8;border-left:6px solid var(--c);padding:2px 0 2px 14px;margin-bottom:14px}
+.ev-topo .cat{color:var(--c);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+.ev-topo h2{margin:2px 0 8px;font-size:1.3rem}
+.ev-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.ev-acoes select{width:auto;padding:6px 10px}
+.pessoas{display:flex;flex-direction:column;gap:4px}
+.pessoas div{display:flex;gap:8px;align-items:center}
+.lista-part{max-height:170px;overflow:auto;border:1px solid #cdd5e3;border-radius:9px;padding:6px 10px}
+.lista-part label{display:flex;gap:8px;align-items:center;font-weight:500;margin:0;padding:4px 0}
+.lista-part input{width:auto}
+.conflito{background:var(--amb-l);color:#78350f;border-radius:9px;padding:10px 14px;margin:10px 0;font-size:.9rem}
+.conflito ul{margin:6px 0 0;padding-left:18px}
+
+/* tarefas e contatos */
+.tarefa{display:flex;gap:12px;align-items:flex-start;padding:12px 6px;border-bottom:1px solid var(--line)}
+.tarefa:last-child{border-bottom:0}
+.tarefa input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;cursor:pointer;accent-color:var(--pri)}
+.tarefa .x{flex:1;min-width:0}.tarefa .x b{display:block}
+.tarefa.feita .x b{text-decoration:line-through;color:var(--mut)}
+.tarefa .sub{color:var(--mut);font-size:.82rem}
+.cor-lin{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.cor-lin input[type=color]{width:46px;height:38px;padding:2px;flex:none}
+.painel-col{display:grid;gap:14px}
+.mini{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer;--c:#1d4ed8}
+.mini:last-child{border-bottom:0}
+.mini .bar{width:4px;align-self:stretch;border-radius:4px;background:var(--c);flex:none}
+.mini .t{min-width:58px;font-weight:700;font-size:.85rem}.mini .x{flex:1;min-width:0}.mini .x span{color:var(--mut);font-size:.8rem;display:block}
+.mini:hover{background:#f8faff}
+
+@media(max-width:860px){
+  .mes-dia{min-height:78px;padding:2px}
+  .mes-dia .chip-ev{font-size:.66rem;padding:1px 3px}.mes-dia .chip-ev .hr{display:none}
+  .fer-nome{display:none}
+  .lin-ev .t{min-width:70px}
+}
+@media(max-width:560px){
+  .leg{display:none}
+  .filters select{flex:1 1 44%;min-width:0}
+  .top .btn:not(.pri):not(.menu-btn){display:none}
+  .mes-dia{min-height:64px}.mes-dia .chip-ev:nth-of-type(n+2){display:none}
+  .cal-title{font-size:1.05rem}
+}
+@media print{
+  .cal-bar .btn,.views,.filters,.leg,.ev-acoes{display:none!important}
+  .sem{overflow:visible}.mes-dia{min-height:90px}
+}

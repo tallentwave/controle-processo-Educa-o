@@ -52,7 +52,7 @@ if (!$ja && $_SERVER['REQUEST_METHOD'] === 'POST' && $reqOk) {
 $apagou = $ok && !is_file(__FILE__);
 ?><!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Instalação – Controle de Processos</title>
+<title>Instalação – Agenda da Educação</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#0f1b3d,#1d4ed8);min-height:100vh;padding:24px 14px;color:#17202e}
 .box{max-width:640px;margin:0 auto;background:#fff;border-radius:16px;padding:30px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
@@ -66,10 +66,10 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .ok{background:#dcfce7;color:#166534;border-radius:9px;padding:12px 14px}.warn{background:#fef3c7;color:#92400e;border-radius:9px;padding:12px 14px;margin-top:12px}
 .req li{list-style:none;padding:3px 0}.req{padding:0;margin:0}.y::before{content:"✅ "}.n::before{content:"❌ "}
 </style></head><body><div class="box">
-<h1>Instalação do sistema</h1><p class="s">Controle de Processos – Secretaria Municipal de Educação</p>
+<h1>Instalação do sistema</h1><p class="s">Agenda – Secretaria Municipal de Educação</p>
 
 <?php if ($ja && !$ok): ?>
-  <div class="ok"><b>O sistema já está instalado.</b></div>
+  <div class="ok"><b>A Agenda já está instalada.</b></div>
   <div class="warn">Por segurança, <b>apague o arquivo <code>install.php</code></b> do servidor.</div>
   <a class="btn" href="./">Ir para o sistema</a>
 
@@ -78,7 +78,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <?php if (!$apagou): ?><div class="warn"><b>Importante:</b> apague agora o arquivo <code>install.php</code> do servidor (o instalador não conseguiu se apagar sozinho).</div>
   <?php else: ?><p class="hint">O instalador foi removido automaticamente do servidor.</p><?php endif; ?>
   <div class="warn" id="rw" style="display:none"><b>Atenção:</b> o endereço <code>/api</code> não respondeu. Verifique se o arquivo <code>.htaccess</code> foi enviado junto (arquivos que começam com ponto ficam ocultos no gerenciador).</div>
-  <a class="btn" href="./">Entrar no sistema</a>
+  <a class="btn" href="./">Entrar na agenda</a>
   <script>fetch('api/me',{headers:{'X-Requested-With':'fetch'}}).then(r=>r.json()).catch(()=>{document.getElementById('rw').style.display='block'})</script>
 
 <?php else: ?>
@@ -88,7 +88,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
   <form method="post" autocomplete="off">
     <h2>1. Banco de dados MySQL</h2>
-    <p class="hint">Crie o banco e o usuário no painel da hospedagem (Bancos de dados → MySQL) e informe os dados abaixo.</p>
+    <p class="hint">Crie o banco e o usuário no painel da hospedagem (Bancos de dados → MySQL) e informe os dados abaixo. Você pode usar o <b>mesmo banco</b> do sistema de Processos: as tabelas da agenda começam com <code>ag_</code> e não se misturam.</p>
     <div class="row"><div><label>Servidor</label><input name="host" value="<?= e($v['host']) ?>" required></div><div><label>Porta</label><input name="port" value="<?= e($v['port']) ?>" required></div></div>
     <label>Nome do banco de dados</label><input name="name" value="<?= e($v['name']) ?>" required placeholder="ex.: u123456789_processos">
     <label>Usuário do banco</label><input name="user" value="<?= e($v['user']) ?>" required placeholder="ex.: u123456789_admin">

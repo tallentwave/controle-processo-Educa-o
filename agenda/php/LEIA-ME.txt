@@ -1,0 +1,24 @@
+AGENDA - SECRETARIA MUNICIPAL DE EDUCACAO
+Instalacao em hospedagem compartilhada (PHP 8.0+ e MySQL)
+
+RECOMENDADO: instalar em um subdominio ou subpasta, para conviver com outros sistemas.
+  Exemplo: https://agenda.seudominio.gov.br  ou  https://seudominio.gov.br/agenda
+
+1) No painel da hospedagem (hPanel): Bancos de dados > MySQL.
+   Voce pode usar o MESMO banco do sistema de Processos (as tabelas da agenda comecam com "ag_"),
+   ou criar um novo banco. Anote: nome do banco, usuario e senha.
+
+2) Gerenciador de Arquivos: abra a pasta do subdominio (ou crie a pasta "agenda" dentro de public_html).
+   Envie o arquivo sistema-agenda-php.zip e clique em "Extrair".
+   ATENCAO: o arquivo ".htaccess" comeca com ponto e fica oculto. Ative "mostrar arquivos ocultos"
+   para conferir que ele foi extraido.
+
+3) No navegador, abra:  https://SEU-ENDERECO/install.php
+   Preencha os dados do banco e do administrador e clique em "Instalar sistema".
+   O instalador se apaga sozinho ao terminar (confira se install.php sumiu).
+
+4) Pronto: acesse https://SEU-ENDERECO e entre com o login e a senha definidos.
+   Depois cadastre os usuarios em Administracao > Usuarios.
+
+Backup: hPanel > Bancos de dados > phpMyAdmin > Exportar (ou os backups da hospedagem).
+Atualizar: envie os novos arquivos por cima, SEM apagar a pasta app (nela fica app/config.php).
