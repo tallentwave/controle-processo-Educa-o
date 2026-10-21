@@ -42,3 +42,9 @@ Requisitos: PHP 8.0+ com `pdo_mysql` e `mbstring`. A interface e as regras são 
 Pasta `agenda/`: calendário (mês, semana, dia e lista) com compromissos recorrentes, reserva de espaços e veículos sem conflito, convites com aceite/recusa,
 lembretes e alertas, tarefas, contatos, feriados nacionais, exportação `.ics`, administrador e usuários criados por ele, auditoria e instalador pelo navegador.
 Pacote pronto: `dist/sistema-agenda-php.zip` (instruções no `LEIA-ME.txt` dentro do zip). Testes: `npm test` (`PHP_TEST_MYSQL=1` para MySQL/MariaDB).
+
+## Corregedoria Municipal (sistema separado, mesmo visual)
+Pasta `corregedoria/`: controle de procedimentos disciplinares (denúncias, investigações, sindicâncias, PAD e TAC) com sigilo, comissão designada,
+prazos de conclusão com prorrogação, audiências/oitivas, controle de prescrição, andamentos imutáveis, registro de documentos do 1Doc,
+trilha de acesso (quem consultou o quê), perfis Administrador/Corregedor/Membro e instalador pelo navegador.
+Pacote pronto: `dist/sistema-corregedoria-php.zip` (instruções no `LEIA-ME.txt`). Tabelas com prefixo `cg_`. Os prazos e a prescrição vêm como modelo e devem ser conferidos com a legislação do município.

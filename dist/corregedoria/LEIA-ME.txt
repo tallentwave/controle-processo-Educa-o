@@ -1,0 +1,30 @@
+CORREGEDORIA MUNICIPAL - CONTROLE DE PROCEDIMENTOS
+Instalacao em hospedagem compartilhada (PHP 8.0+ e MySQL)
+
+IMPORTANTE (SIGILO): instale em um subdominio proprio, com HTTPS, por exemplo
+  https://corregedoria.seudominio.gov.br
+Nao compartilhe o banco de dados nem a pasta do sistema com pessoas sem autorizacao.
+
+1) No painel da hospedagem (hPanel): Bancos de dados > MySQL.
+   Recomenda-se um banco EXCLUSIVO para a Corregedoria (as tabelas comecam com "cg_").
+   Anote: nome do banco, usuario e senha.
+
+2) Gerenciador de Arquivos: abra a pasta do subdominio. Envie o arquivo
+   sistema-corregedoria-php.zip e clique em "Extrair".
+   ATENCAO: o arquivo ".htaccess" comeca com ponto e fica oculto. Ative "mostrar arquivos ocultos"
+   para conferir que ele foi extraido.
+
+3) No navegador, abra:  https://SEU-ENDERECO/install.php
+   Preencha os dados do banco e do administrador e clique em "Instalar sistema".
+   O instalador se apaga sozinho ao terminar (confira se install.php sumiu).
+
+4) Entre com o login e a senha definidos e, em Administracao > Usuarios, cadastre a equipe:
+   - Corregedor(a): acessa todos os procedimentos, designa comissoes e ve a trilha de acesso.
+   - Membro: acessa os procedimentos internos e os sigilosos em que for designado.
+
+5) Em Administracao > Configuracoes, CONFIRA os prazos de conclusao dos tipos de procedimento e os
+   prazos prescricionais. Os valores iniciais sao apenas modelos e devem seguir o Estatuto dos
+   Servidores e a legislacao do municipio.
+
+Backup: hPanel > Bancos de dados > phpMyAdmin > Exportar (faca periodicamente e guarde em local seguro).
+Atualizar: envie os novos arquivos por cima, SEM apagar a pasta app (nela fica app/config.php).

@@ -1,0 +1,68 @@
+
+/* ===== Corregedoria: componentes próprios (usa as variáveis do tema base) ===== */
+.nav .badge.zero{display:none}
+.b-dark{background:#1f2937;color:#fff}
+.b-pur{background:#ede9fe;color:#5b21b6}
+.so-print{display:none}
+.tbl-wrap td .sub{display:block}
+tr.row.s-vencido td:first-child,tr.row.p-prescrito td:first-child{box-shadow:inset 4px 0 var(--red)}
+tr.row.s-hoje td:first-child,tr.row.p-critico td:first-child{box-shadow:inset 4px 0 var(--amb)}
+tr.row.s-proximo td:first-child{box-shadow:inset 4px 0 #f59e0b80}
+tr.row.p-prescrito td:first-child,tr.row.p-critico td:first-child{box-shadow:inset 4px 0 var(--red)}
+tr.row.encerrado{opacity:.75}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.cols>div{display:grid;gap:14px;min-width:0}
+.card h2 .acao{float:right;font-size:.8rem}
+.alertas-proc{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:14px}
+.alertas-proc .deadline{margin:0}
+.lista-i{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.lista-i:last-child{border-bottom:0}
+.lista-i .x{flex:1;min-width:0}.lista-i .x b{display:block}.lista-i .sub{color:var(--mut);font-size:.82rem}
+.lista-i .dt{min-width:84px;font-weight:700;font-size:.85rem}
+.lista-i input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;cursor:pointer;accent-color:var(--pri)}
+.lista-i.feito .x b{text-decoration:line-through;color:var(--mut)}
+.lista-i .btns{display:flex;gap:6px;flex-wrap:wrap}
+.clicavel{cursor:pointer}.clicavel:hover{background:#f8faff}
+.timeline li.Situação::before,.timeline li.Decisão::before{background:var(--grn)}
+.timeline li.Prorrogação::before,.timeline li.Designação::before{background:var(--amb)}
+.timeline li.Registro::before{background:#94a3b8}
+.timeline li.Oitiva::before,.timeline li.Intimação::before{background:#7c3aed}
+.timeline .tp{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--mut)}
+.timeline .tx{white-space:pre-wrap}
+.sec{margin:16px 0 8px;padding-top:14px;border-top:1px solid var(--line);font-weight:700}
+.sec:first-child{border-top:0;margin-top:0;padding-top:0}
+.rowx{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.rowx select{flex:1}.rowx select.f{width:160px;flex:none}
+.aviso-sigilo{background:#1f2937;color:#fff;border-radius:var(--r);padding:10px 16px;margin-bottom:14px;display:flex;gap:10px;align-items:center;font-size:.9rem}
+.login .aviso{background:#fef3c7;color:#78350f;border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:.82rem}
+.sel-pre{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+
+@media(max-width:860px){.cols{grid-template-columns:1fr}.sel-pre{grid-template-columns:1fr}}
+@media print{
+  .so-print{display:block;margin-bottom:12px}
+  .so-print h2{margin:0}
+  .cols{grid-template-columns:1fr}
+  .card .btn,.top .btn,.lista-i input[type=checkbox],.timeline form{display:none!important}
+  .aviso-sigilo{border:1px solid #000;background:#fff;color:#000}
+}
+
+/* ajustes de leitura */
+.lista-i .sub{display:block}
+.grid2c{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.num{white-space:normal;max-width:210px}.nw{white-space:nowrap}
+.tbl-wrap td,.tbl-wrap th{padding-left:8px;padding-right:8px}
+td.assunto{min-width:200px}
+@media(max-width:860px){.grid2c{grid-template-columns:1fr}}
+
+/* celular: cada procedimento vira um cartão */
+@media(max-width:700px){
+  .filters select,.filters input[type=search]{width:100%;flex:1 1 100%}
+  table.cards-m thead{display:none}
+  table.cards-m,table.cards-m tbody{display:block}
+  table.cards-m tr.row{display:block;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;padding:8px 6px;background:#fff}
+  table.cards-m td{display:block;border:0;padding:3px 8px;max-width:none}
+  table.cards-m td:first-child{box-shadow:none!important}
+  table.cards-m tr.row.s-vencido,table.cards-m tr.row.p-prescrito,table.cards-m tr.row.p-critico{border-left:5px solid var(--red)}
+  table.cards-m tr.row.s-hoje,table.cards-m tr.row.s-proximo{border-left:5px solid var(--amb)}
+  table.cards-m td.assunto{min-width:0}
+}
